@@ -1,0 +1,86 @@
+:root
+{
+    --title: rgba(251.0, 199.0, 162.0, 1);
+    --text: rgba(255, 255, 255, 0.8);
+    --box: rgba(76,56,68, 0.7);
+}
+
+body
+{
+    background-image: linear-gradient(to right top, #1d1c2c, #282535, #342f3e, #3f3947, #4b4450, #5a505b, #695c67, #786872, #8f7980, #a68b8e, #bc9e9a, #d0b2a7);
+    height:100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--text);
+}
+
+.radar_button
+{
+    background-color: orange;
+    fill: black;
+}
+
+#move_box
+{
+    position: absolute;
+    left:50vw;
+    top:50vh;
+    background: var(--box);
+    width:40vh;
+    height:40vh;
+    transform: translate(-50%, -50%);
+    border-radius: 5vh;
+    -webkit-box-shadow: -33px 39px 53px -12px rgba(0,0,0,0.86), -4px 4px 4px -1px rgba(62,55,71,0.7) inset;
+    -moz-box-shadow: -33px 39px 53px -12px rgba(0,0,0,0.86), -4px 4px 4px -1px rgba(62,55,71,0.7) inset;
+    box-shadow: -33px 39px 53px -12px rgba(0,0,0,0.86), -4px 4px 4px -1px rgba(62,55,71,0.7) inset;
+}
+
+.move
+{
+    position: absolute;
+	top: 0;
+	left: 50%;
+	width: 0;
+	height: auto;
+	transform-origin: bottom;
+}
+
+#move_forward {
+    transform: translate(-50%, 50%);
+}
+
+#move_back {
+	transform: translate(-50%, 50%) rotate(180deg);
+}
+
+#move_left {
+	transform: translate(-50%, 50%) rotate(270deg);
+}
+
+#move_right {
+	transform: translate(-50%, 50%) rotate(90deg);
+}
+
+.move_svg {
+	transform: translate(-50%, 0%);
+	bottom: 2vh;
+	position: relative;
+	height: 260px;
+	width: 260px;
+}
+
+.move_button
+{
+    fill: rgba(255,255,255,0.9);
+    stroke: black;
+    stroke-width:2px;
+    transform: scale(1.0);
+    transition: all 0.1s;
+    transform-origin: center;
+}
+
+.move_button:hover
+{
+    fill: rgba(255,255,255,0.6);
+    transform: scale(1.05);
+}
