@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg width="100mm" height="100mm" version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
- <path transform="scale(.26458)" d="m188.98 56.693c-32.748 0.06269-64.308 12.27-88.574 34.26l33.395 33.395c15.379-13.152 34.944-20.389 55.18-20.41 20.236 0.0215 39.801 7.2582 55.18 20.41l33.395-33.395c-24.266-21.99-55.827-34.197-88.574-34.26z" fill="#fff" stroke="#000" stroke-width=".37795"/>
+<svg width="280" height="280" version="1.1" viewBox="0 0 262.5 262.5" xmlns="http://www.w3.org/2000/svg">
+ <path d="m131.25 145.31c-30.67 0.06-60.23 11.49-82.96 32.09l31.28 31.28c14.4-12.32 32.73-19.1 51.68-19.12 18.96 0.02 37.28 6.8 51.68 19.12l31.28-31.28c-22.73-20.6-52.29-32.03-82.96-32.09z" fill="none" stroke="#000"/>
 </svg>

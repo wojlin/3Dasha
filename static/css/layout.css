@@ -1,0 +1,52 @@
+#menu {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-auto-columns: 1fr;
+  grid-auto-rows: 1fr;
+  gap: 2% 3%;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "status status webcam webcam webcam temperature_chart temperature_chart"
+    "print print webcam webcam webcam move_chart move_chart"
+    "files files webcam webcam webcam move_chart move_chart"
+    "files files extruder extruder move move move"
+    "files files temperature temperature move move move";
+   width:90%;
+   height:90vh;
+   margin:auto;
+
+}
+
+#menu_box_webcam {
+	grid-area: webcam;
+	border-radius: 100%;
+	margin: 3vh;
+	position: relative;
+}
+
+#menu_box_move { grid-area: move; }
+
+#menu_box_status { grid-area: status; }
+
+#menu_box_files { grid-area: files; }
+
+#menu_box_print { grid-area: print; }
+
+#menu_box_extruder { grid-area: extruder; }
+
+#menu_box_temperature { grid-area: temperature; }
+
+#menu_box_move_chart { grid-area: move_chart; }
+
+#menu_box_temperature_chart { grid-area: temperature_chart; }
+
+
+.menu_box
+{
+    background: var(--box);
+    border-radius: 5vh;
+    -webkit-box-shadow: -33px 39px 53px -12px rgba(0,0,0,0.86), -4px 4px 4px -1px rgba(62,55,71,0.7) inset;
+    -moz-box-shadow: -33px 39px 53px -12px rgba(0,0,0,0.86), -4px 4px 4px -1px rgba(62,55,71,0.7) inset;
+    box-shadow: -33px 39px 53px -12px rgba(0,0,0,0.86), -4px 4px 4px -1px rgba(62,55,71,0.7) inset;
+}
+

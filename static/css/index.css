@@ -3,6 +3,18 @@
     --title: rgba(251.0, 199.0, 162.0, 1);
     --text: rgba(255, 255, 255, 0.8);
     --box: rgba(76,56,68, 0.7);
+    --button: rgba(60, 46, 54, 0.7);
+    --button_hover: rgba(100, 86, 94, 0.2);
+}
+
+@font-face {
+  font-family: fira_regular;
+  src: url(/static/fonts/fira_regular.otf);
+}
+
+@font-face {
+  font-family: fira_bold;
+  src: url(/static/fonts/fira_bold.otf);
 }
 
 body
@@ -12,6 +24,19 @@ body
     background-repeat: no-repeat;
     background-attachment: fixed;
     color: var(--text);
+    font-family: fira_regular;
+    overflow: hidden;
+}
+
+h1 {
+	font-family: fira_bold;
+	color: var(--title);
+	font-weight: bold;
+	margin: auto;
+	display: block;
+	margin-top: 1vh;
+	text-align: center;
+	user-select: none;
 }
 
 .radar_button
@@ -20,48 +45,63 @@ body
     fill: black;
 }
 
-#move_box
-{
-    position: absolute;
-    left:50vw;
-    top:50vh;
-    background: var(--box);
-    width:40vh;
-    height:40vh;
-    transform: translate(-50%, -50%);
-    border-radius: 5vh;
-    -webkit-box-shadow: -33px 39px 53px -12px rgba(0,0,0,0.86), -4px 4px 4px -1px rgba(62,55,71,0.7) inset;
-    -moz-box-shadow: -33px 39px 53px -12px rgba(0,0,0,0.86), -4px 4px 4px -1px rgba(62,55,71,0.7) inset;
-    box-shadow: -33px 39px 53px -12px rgba(0,0,0,0.86), -4px 4px 4px -1px rgba(62,55,71,0.7) inset;
+
+
+
+
+#move_box_content {
+	position: relative;
+	height: 100%;
+	display: block;
+	left: 0;
+	top: 0;
+	width: 100%;
 }
 
-.move
-{
-    position: absolute;
-	top: 0;
+#move_box_horizontal {
+	width: fit-content;
+	margin-left: 3vh;
+	display: inline-block;
+	margin-top:-2vh;
+	transform: scale(0.9);
+}
+
+#move_box_horizontal_inner {
+	height: 30vh;
+	width: 30vh;
+	position: relative;
+}
+
+.move_horizontal {
+	position: absolute;
+	top: -50%;
 	left: 50%;
 	width: 0;
 	height: auto;
 	transform-origin: bottom;
 }
 
-#move_forward {
+#move_forward
+{
     transform: translate(-50%, 50%);
 }
 
-#move_back {
+#move_back
+{
 	transform: translate(-50%, 50%) rotate(180deg);
 }
 
-#move_left {
+#move_left
+{
 	transform: translate(-50%, 50%) rotate(270deg);
 }
 
-#move_right {
+#move_right
+{
 	transform: translate(-50%, 50%) rotate(90deg);
 }
 
-.move_svg {
+.move_horizontal_svg {
 	transform: translate(-50%, 0%);
 	bottom: 2vh;
 	position: relative;
@@ -69,9 +109,58 @@ body
 	width: 260px;
 }
 
+
+
+#move_box_vertical
+{
+    width: 20%;
+	margin-right: 3vh;
+	float: right;
+	display: inline-block;
+	margin-top:-2vh;
+	transform: scale(0.9);
+}
+
+#move_box_vertical_inner
+{
+	height: 30vh;
+	width: 10vh;
+	position: relative;
+}
+
+.move_vertical {
+	position: absolute;
+	top: -20%;
+	left: 50%;
+	width: 0;
+	height: auto;
+	transform-origin: bottom;
+}
+
+#move_up
+{
+    transform: translate(-50%, 50%);
+}
+
+#move_down
+{
+    transform: translate(-50%, 50%) rotate(180deg);
+}
+
+.move_vertical_svg {
+	transform: translate(-50%, 0%);
+	bottom: 1vh;
+	position: relative;
+	height: 180px;
+	width: 100px;
+}
+
+
+
+
 .move_button
 {
-    fill: rgba(255,255,255,0.9);
+    fill: var(--button);
     stroke: black;
     stroke-width:2px;
     transform: scale(1.0);
@@ -81,6 +170,31 @@ body
 
 .move_button:hover
 {
-    fill: rgba(255,255,255,0.6);
+    fill: var(--button_hover);
     transform: scale(1.05);
+}
+
+#webcam_content {
+	width: 45vh;
+	height: 45vh;
+	display: block;
+	border-radius: 100%;
+	overflow: hidden;
+	margin: auto;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+
+#webcam {
+	width: 95%;
+	height: 95%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	display: block;
+	position: relative;
+	border: solid 0.2vh black;
+	border-radius: 100%;
 }
