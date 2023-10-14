@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100"
+   height="200"
+   viewBox="0 0 26.458333 52.916672"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="vertical.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="true"
+     units="px"
+     width="100px"
+     inkscape:zoom="0.77771465"
+     inkscape:cx="-190.30116"
+     inkscape:cy="-7.7149119"
+     inkscape:window-width="3440"
+     inkscape:window-height="1295"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid843"
+       spacingx="0.26458334"
+       spacingy="1.3229167" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path1048"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.377953"
+       d="M 50,5 A 195,195 0 0 0 2.265625,11.332031 l 9.822266,49.109375 A 145,145 0 0 1 50,55 145,145 0 0 1 87.978516,60.107422 L 97.808594,10.960938 A 195,195 0 0 0 50,5 Z"
+       transform="scale(0.26458333)" />
+    <path
+       id="path1722"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.377953"
+       d="m 50,60 a 140,140 0 0 0 -36.972656,5.134766 l 8.882812,44.414064 A 94.999997,94.999997 0 0 1 50,105 a 94.999997,94.999997 0 0 1 28.146484,4.26758 l 8.84961,-44.248049 A 140,140 0 0 0 50,60 Z"
+       transform="scale(0.26458333)" />
+    <path
+       id="path1726"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.377953"
+       d="m 50,110 a 89.999999,89.999999 0 0 0 -27.138672,4.31055 L 33.818359,169.0918 A 35.000001,35.000001 0 0 1 50,165 35.000001,35.000001 0 0 1 66.181641,169.0918 L 77.15625,114.2168 A 89.999999,89.999999 0 0 0 50,110 Z"
+       transform="scale(0.26458333)" />
+  </g>
+</svg>
