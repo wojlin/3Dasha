@@ -3,15 +3,15 @@ function init() {
     document.addEventListener("touchstart", function () {}, false);
 
     setInputButtonState();
-    setBackgroundColor();
+    setTemperature();
 }
 
 function handleNumberInput() {
     setInputButtonState();
-    setBackgroundColor();
+    setTemperature();
 }
 
-function setBackgroundColor() {
+function setTemperature() {
     let extruderTemp = document.getElementById("extruder").value;
     let bedTemp = document.getElementById("bed").value;
 
@@ -70,7 +70,7 @@ function setNumber(event) {
 
         if (input.value !== value) {
             setInputValue(input, value);
-            setBackgroundColor();
+            setTemperature();
             setInputButtonState();
         }
     }

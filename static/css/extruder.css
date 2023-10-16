@@ -1,0 +1,28 @@
+#extruder_buttons {
+	font-size: 0;
+	width: min-content;
+	margin: auto;
+	display: flex;
+	flex-direction: row;
+}
+
+.extruder_select
+{
+    width:3vw;
+    height:3vw;
+    background: white;
+    color: black;
+    border: solid 0.2vh black;
+    display: inline-block;
+    margin:0.5vh;
+    padding:0;
+}
+
+#extrude_button
+{
+    width:50%;
+    height:3vh;
+    margin: auto;
+    display:block;
+    margin-top:1vh;
+}

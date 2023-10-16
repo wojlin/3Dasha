@@ -1,0 +1,35 @@
+{
+  "0":
+  {
+    "printerSettings":
+    {
+      "name": {"value":  "Creality ender 3 v2 Neo", "unit": "", "comment":  "name of 3D printer"},
+      "port": {"value":  "/dev/usb/xD", "unit": "", "comment":  "USB port of 3D printer"}
+    },
+    "cameraSettings":
+    {
+      "isUsed": {"value":  true, "unit": "", "comment":  "whether to camera is used or not"},
+      "port": {"value":  0, "unit": "", "comment":  "camera port"},
+      "recordTimelapse": {"value":  true, "unit": "", "comment":  "whether to record timelapse of print or not"},
+      "timelapseSpeed": {"value":  16, "unit": "", "comment":  "how much faster will recording play"}
+    },
+    "movementSettings":
+    {
+      "xSize": {"value":  220.0, "unit": "mm", "comment":  "X axis (width) size of bed in millimeters"},
+      "ySize": {"value":  220.0, "unit": "mm", "comment":  "Y axis (depth) size of bed in millimeters"},
+      "zSize": {"value":  250.0, "unit": "mm", "comment":  "Z axis (height) size of bed in millimeters"}
+    },
+    "extruderSettings":
+    {
+      "extruderMinTemperature": {"value":  0, "unit": "°C", "comment":  "minimal temperature of extruder"},
+      "extruderMaxTemperature": {"value":  300, "unit": "°C", "comment":  "maximal temperature of extruder"},
+      "extruderDefaultTemperature": {"value":  0, "unit": "°C", "comment":  "default temperature of extruder"}
+    },
+    "bedSettings":
+    {
+      "bedMinTemperature": {"value":  0, "unit": "°C", "comment":  "minimal temperature of bed"},
+      "bedMaxTemperature": {"value":  100, "unit": "°C", "comment":  "maximal temperature of bed"},
+      "bedDefaultTemperature": {"value":  0, "unit": "°C", "comment":  "minimal temperature of bed"}
+    }
+  }
+}

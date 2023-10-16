@@ -1,0 +1,5 @@
+{
+  "host": {"value":  "localhost", "unit": "", "comment":  "host address of the application"},
+  "port": {"value":  5000, "unit": "", "comment":  "port of the application"},
+  "debug": {"value":  true, "unit": "", "comment":  "debug Mode"}
+}

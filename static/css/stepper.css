@@ -1,7 +1,7 @@
 #temperature_form {
 	width: 75%;
 	margin: auto;
-	margin-top:1vh;
+	margin-top:0vh;
 }
 
 #temperature_form > div
@@ -12,7 +12,7 @@
 
 .temperature_form_box {
 	margin-bottom: 1vh;
-	margin-top: 1vh;
+	margin-top: 0.5vh;
 	background-color: white;
 	border-radius: 4vh;
 	box-shadow: 0px 8px 40px rgba(128, 128, 128, 0.15);
@@ -94,7 +94,7 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
-button {
+.number-input-container > button {
     position: relative;
 
     height: 100%;
@@ -117,18 +117,18 @@ button {
     transform: scale(1);
 }
 
-button {
+.number-input-container > button {
     margin: 0;
 
     color: var(--color-black);
 }
 
-button:active,
-button:focus {
+.number-input-container > button:active,
+.number-input-container > button:focus {
     outline: none;
 }
 
-button::after {
+.number-input-container > button::after {
     content: "";
 
     position: absolute;
@@ -146,11 +146,11 @@ button::after {
     background-repeat: no-repeat;
 }
 
-button:disabled {
+.number-input-container > button:disabled {
     pointer-events: none;
 }
 
-button:disabled::after {
+.number-input-container > button:disabled::after {
     opacity: 0.25;
 }
 
@@ -170,7 +170,7 @@ button:disabled::after {
     border-left: none;
 }
 
-button:hover
+.number-input-container > button:hover
 {
     background: rgba(0,0,0,0.2);
     border-radius:50%;

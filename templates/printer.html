@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3Dasha</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/printer.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/layout.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/stepper.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/extruder.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bar.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/directory.css') }}">
+</head>
+<body>
+<div id="data" data-files="{{printer.directory_tree_js}}"></div>
+<div id="menu">
+    <div id="menu_box_webcam">
+        <div class="menu_box" id="webcam_content">
+            <img id="webcam" src="{{ url_for('webcam') }}" width="100%">
+        </div>
+    </div>
+    <div class="menu_box" id="menu_box_move">
+        <div id="move_box_content">
+            <h1>Move Panel</h1>
+
+            <div id="move_box_horizontal">
+                <div id="move_box_horizontal_inner">
+                    <div class="move_horizontal" id="move_forward">
+                        <svg class="move_horizontal_svg" xmlns="http://www.w3.org/2000/svg">
+                            <a xlink:title="forward_3" href="/forward_3" id="forward_3">
+                                <path class="move_button"
+                                      d="m131.25 93.75c-44.73 0.13-87.75 17.18-120.41 47.73l31.32 31.32c24.34-22.27 56.1-34.67 89.09-34.8 33.04 0.01 64.89 12.34 89.32 34.58l31.31-31.31c-32.75-30.52-75.85-47.5-120.63-47.52z"
+                                      id="forward_3"/>
+                            </a>
+                            <a xlink:title="forward_2" href="/forward_2" id="forward_2">
+                                <path class="move_button"
+                                      d="m131.25 145.31c-30.67 0.06-60.23 11.49-82.96 32.09l31.28 31.28c14.4-12.32 32.73-19.1 51.68-19.12 18.96 0.02 37.28 6.8 51.68 19.12l31.28-31.28c-22.73-20.6-52.29-32.03-82.96-32.09z"
+                                      id="forward_2"/>
+                            </a>
+                            <a xlink:title="forward_1" href="/forward_1" id="forward_1">
+                                <path class="move_button"
+                                      d="m131.25 196.88c-16.6 0.03-32.67 5.89-45.38 16.57l31.68 31.68c4.12-2.56 8.86-3.94 13.7-4 4.85 0.06 9.58 1.44 13.7 4l31.69-31.68c-12.72-10.68-28.79-16.54-45.39-16.57z"
+                                      id="forward_1"/>
+                            </a>
+                        </svg>
+                    </div>
+                    <div class="move_horizontal" id="move_back">
+                        <svg class="move_horizontal_svg" xmlns="http://www.w3.org/2000/svg">
+                            <a xlink:title="back_3" href="/back_3" id="back_3">
+                                <path class="move_button"
+                                      d="m131.25 93.75c-44.73 0.13-87.75 17.18-120.41 47.73l31.32 31.32c24.34-22.27 56.1-34.67 89.09-34.8 33.04 0.01 64.89 12.34 89.32 34.58l31.31-31.31c-32.75-30.52-75.85-47.5-120.63-47.52z"
+                                      id="back_3"/>
+                            </a>
+                            <a xlink:title="back_2" href="/back_2" id="back_2">
+                                <path class="move_button"
+                                      d="m131.25 145.31c-30.67 0.06-60.23 11.49-82.96 32.09l31.28 31.28c14.4-12.32 32.73-19.1 51.68-19.12 18.96 0.02 37.28 6.8 51.68 19.12l31.28-31.28c-22.73-20.6-52.29-32.03-82.96-32.09z"
+                                      id="back_2"/>
+                            </a>
+                            <a xlink:title="back_1" href="/back_1" id="back_1">
+                                <path class="move_button"
+                                      d="m131.25 196.88c-16.6 0.03-32.67 5.89-45.38 16.57l31.68 31.68c4.12-2.56 8.86-3.94 13.7-4 4.85 0.06 9.58 1.44 13.7 4l31.69-31.68c-12.72-10.68-28.79-16.54-45.39-16.57z"
+                                      id="back_1"/>
+                            </a>
+                        </svg>
+                    </div>
+                    <div class="move_horizontal" id="move_right">
+                        <svg class="move_horizontal_svg" xmlns="http://www.w3.org/2000/svg">
+                            <a xlink:title="right_3" href="/right_3" id="right_3">
+                                <path class="move_button"
+                                      d="m131.25 93.75c-44.73 0.13-87.75 17.18-120.41 47.73l31.32 31.32c24.34-22.27 56.1-34.67 89.09-34.8 33.04 0.01 64.89 12.34 89.32 34.58l31.31-31.31c-32.75-30.52-75.85-47.5-120.63-47.52z"
+                                      id="right_3"/>
+                            </a>
+                            <a xlink:title="right_2" href="/right_2" id="right_2">
+                                <path class="move_button"
+                                      d="m131.25 145.31c-30.67 0.06-60.23 11.49-82.96 32.09l31.28 31.28c14.4-12.32 32.73-19.1 51.68-19.12 18.96 0.02 37.28 6.8 51.68 19.12l31.28-31.28c-22.73-20.6-52.29-32.03-82.96-32.09z"
+                                      id="right_2"/>
+                            </a>
+                            <a xlink:title="right_1" href="/right_1" id="right_1">
+                                <path class="move_button"
+                                      d="m131.25 196.88c-16.6 0.03-32.67 5.89-45.38 16.57l31.68 31.68c4.12-2.56 8.86-3.94 13.7-4 4.85 0.06 9.58 1.44 13.7 4l31.69-31.68c-12.72-10.68-28.79-16.54-45.39-16.57z"
+                                      id="right_1"/>
+                            </a>
+                        </svg>
+                    </div>
+                    <div class="move_horizontal" id="move_left">
+                        <svg class="move_horizontal_svg" xmlns="http://www.w3.org/2000/svg">
+                            <a xlink:title="left_3" href="/left_3" id="left_3">
+                                <path class="move_button"
+                                      d="m131.25 93.75c-44.73 0.13-87.75 17.18-120.41 47.73l31.32 31.32c24.34-22.27 56.1-34.67 89.09-34.8 33.04 0.01 64.89 12.34 89.32 34.58l31.31-31.31c-32.75-30.52-75.85-47.5-120.63-47.52z"
+                                      id="left_3"/>
+                            </a>
+                            <a xlink:title="left_2" href="/left_2" id="left_2">
+                                <path class="move_button"
+                                      d="m131.25 145.31c-30.67 0.06-60.23 11.49-82.96 32.09l31.28 31.28c14.4-12.32 32.73-19.1 51.68-19.12 18.96 0.02 37.28 6.8 51.68 19.12l31.28-31.28c-22.73-20.6-52.29-32.03-82.96-32.09z"
+                                      id="left_2"/>
+                            </a>
+                            <a xlink:title="left_1" href="/left_1" id="left_1">
+                                <path class="move_button"
+                                      d="m131.25 196.88c-16.6 0.03-32.67 5.89-45.38 16.57l31.68 31.68c4.12-2.56 8.86-3.94 13.7-4 4.85 0.06 9.58 1.44 13.7 4l31.69-31.68c-12.72-10.68-28.79-16.54-45.39-16.57z"
+                                      id="left_1"/>
+                            </a>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div id="move_box_vertical">
+                <div id="move_box_vertical_inner">
+                    <div class="move_vertical" id="move_up">
+                        <svg class="move_vertical_svg" xmlns="http://www.w3.org/2000/svg">
+                            <a xlink:title="up_3" href="/up_3" id="up_3">
+                                <path class="move_button"
+                                      d="m50 5a195 195 0 0 0-47.734 6.332l9.8223 49.109a145 145 0 0 1 37.912-5.4414 145 145 0 0 1 37.979 5.1074l9.8301-49.146a195 195 0 0 0-47.809-5.9609z"
+                                      id="up_3"/>
+                            </a>
+                            <a xlink:title="up_2" href="/up_2" id="up_2">
+                                <path class="move_button"
+                                      d="m50 60a140 140 0 0 0-36.973 5.1348l8.8828 44.414a95 95 0 0 1 28.09-4.5488 95 95 0 0 1 28.146 4.2676l8.8496-44.248a140 140 0 0 0-36.996-5.0195z"
+                                      id="up_2"/>
+                            </a>
+                            <a xlink:title="up_1" href="/up_1" id="up_1">
+                                <path class="move_button"
+                                      d="m50 110a90 90 0 0 0-27.139 4.3106l10.957 54.781a35 35 0 0 1 16.182-4.0918 35 35 0 0 1 16.182 4.0918l10.975-54.875a90 90 0 0 0-27.156-4.2168z"
+                                      id="up_1"/>
+                            </a>
+                        </svg>
+                    </div>
+                    <div class="move_vertical" id="move_down">
+                        <svg class="move_vertical_svg" xmlns="http://www.w3.org/2000/svg">
+                            <a xlink:title="down_3" href="/down_3" id="down_3">
+                                <path class="move_button"
+                                      d="m50 5a195 195 0 0 0-47.734 6.332l9.8223 49.109a145 145 0 0 1 37.912-5.4414 145 145 0 0 1 37.979 5.1074l9.8301-49.146a195 195 0 0 0-47.809-5.9609z"
+                                      id="down_3"/>
+                            </a>
+                            <a xlink:title="down_2" href="/down_2" id="down_2">
+                                <path class="move_button"
+                                      d="m50 60a140 140 0 0 0-36.973 5.1348l8.8828 44.414a95 95 0 0 1 28.09-4.5488 95 95 0 0 1 28.146 4.2676l8.8496-44.248a140 140 0 0 0-36.996-5.0195z"
+                                      id="down_2"/>
+                            </a>
+                            <a xlink:title="down_1" href="/down_1" id="down_1">
+                                <path class="move_button"
+                                      d="m50 110a90 90 0 0 0-27.139 4.3106l10.957 54.781a35 35 0 0 1 16.182-4.0918 35 35 0 0 1 16.182 4.0918l10.975-54.875a90 90 0 0 0-27.156-4.2168z"
+                                      id="down_1"/>
+                            </a>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="menu_box" id="menu_box_status">
+        <h1>Status</h1>
+        <table class="info_table">
+            <tr class="info_table_row">
+                <td>Name:</td>
+                <td>{{ printer.printer_name }}</td>
+            </tr>
+            <tr class="info_table_row">
+                <td>Port:</td>
+                <td>{{ printer.printer_port }}</td>
+            </tr>
+            <tr class="info_table_row">
+                <td>Status:</td>
+                <td>{{ printer.printer_status }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="menu_box" id="menu_box_files">
+        <h1>Files</h1>
+        <p>(drag and drop file or click plus icon to add new gcode)</p>
+        <ul id="directory">
+        </ul>
+    </div>
+    <div class="menu_box" id="menu_box_print">
+        <h1>Print</h1>
+        <table class="info_table">
+            <tr class="info_table_row">
+                <td>File:</td>
+                <td>--</td>
+            </tr>
+            <tr class="info_table_row">
+                <td>Timelapse:</td>
+                <td>--</td>
+            </tr>
+            <tr class="info_table_row">
+                <td>Print Time:</td>
+                <td>--:--:--</td>
+            </tr>
+            <tr class="info_table_row">
+                <td>Print Time Left:</td>
+                <td>--:--:--</td>
+            </tr>
+            <tr class="info_table_row">
+                <td>Printed:</td>
+                <td>--/--</td>
+            </tr>
+        </table>
+        <div id="printed_percentage_panel">
+            <div id="printed_percentage_panel_wrap">
+                <div id="progress_text" class="bar-percentage" data-percentage="63"></div>
+                <div class="bar-container">
+                    <div id="progress_bar" class="bar"></div>
+                </div>
+            </div>
+        </div>
+        <div id="print_settings_buttons">
+            <button><img src="/static/images/printer.png" />Print</button>
+            <button><img src="/static/images/pause.png" />Pause</button>
+            <button><img src="/static/images/stop.png" />Cancel</button>
+        </div>
+
+    </div>
+    <div class="menu_box" id="menu_box_extruder">
+        <div id="extruder_content">
+            <h1>Extruder</h1>
+            <div id="extruder_buttons">
+                <button class="extruder_select" onclick="changeExtrude(-100, this);">-100mm</button>
+                <button class="extruder_select" onclick="changeExtrude(-10, this);">-10mm</button>
+                <button class="extruder_select" onclick="changeExtrude(-1, this);">-1mm</button>
+                <button class="extruder_select" onclick="changeExtrude(1, this);">1mm</button>
+                <button class="extruder_select" onclick="changeExtrude(10, this);">10mm</button>
+                <button class="extruder_select" onclick="changeExtrude(100, this);">100mm</button>
+            </div>
+            <button id="extrude_button" onclick="extrude();">Extrude!</button>
+        </div>
+    </div>
+    <div class="menu_box" id="menu_box_temperature">
+        <div id="temperature_content">
+            <h1>Temperature</h1>
+            <form id="temperature_form" action="javascript:void(0);">
+                <div>
+                    <p class="temperature_label">Extruder</p>
+                    <div class="temperature_form_box">
+                        <div class="number-input-container">
+                            <button
+                                    type="button"
+                                    class="button-decrement"
+                                    onclick="setNumber(event)"
+                                    data-input-id="extruder"
+                                    data-operation="decrement"
+                            ></button>
+                            <div class="number-input">
+                                <input
+                                        type="number"
+                                        id="extruder"
+                                        name="extruder"
+                                        class="number-input-text-box"
+                                        value="100"
+                                        min="0"
+                                        max="300"
+                                        oninput="handleNumberInput()"
+                                        onblur="handleNumberInputBlur(event)"
+                                        data-step="10"
+                                />
+                            </div>
+                            <span class="temperature_unit">°C</span>
+                            <button
+                                    type="button"
+                                    class="button-increment"
+                                    onclick="setNumber(event)"
+                                    data-input-id="extruder"
+                                    data-operation="increment"
+                            ></button>
+                        </div>
+                    </div>
+                </div>
+                <div style="float:right;">
+
+                    <p class="temperature_label">Bed</p>
+
+                    <div class="temperature_form_box">
+                        <div class="number-input-container">
+                            <button
+                                    type="button"
+                                    class="button-decrement"
+                                    onclick="setNumber(event)"
+                                    data-input-id="bed"
+                                    data-operation="decrement"
+                            ></button>
+                            <div class="number-input">
+                                <input
+                                        type="number"
+                                        id="bed"
+                                        name="bed"
+                                        class="number-input-text-box"
+                                        value="20"
+                                        min="0"
+                                        max="100"
+                                        oninput="handleNumberInput()"
+                                        onblur="handleNumberInputBlur(event)"
+                                        data-step="10"
+                                />
+                            </div>
+                            <span class="temperature_unit">°C</span>
+                            <button
+                                    type="button"
+                                    class="button-increment"
+                                    onclick="setNumber(event)"
+                                    data-input-id="bed"
+                                    data-operation="increment"
+                            ></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="menu_box" id="menu_box_move_chart">
+        <h1>Move Chart</h1>
+    </div>
+    <div class="menu_box" id="menu_box_temperature_chart">
+        <h1>Temperature Chart</h1>
+    </div>
+</div>
+
+
+<script src="{{url_for('static', filename='js/core.js')}}"></script>
+<script src="{{url_for('static', filename='js/stepper.js')}}"></script>
+</body>
+</html>

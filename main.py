@@ -1,12 +1,21 @@
 from flask import Flask, Response, render_template
+from typing import List
 import cv2
+import os
+
+from ConfigManager import ConfigManager
+from Printer import Printer
 
 class EndpointAction(object):
-    def __init__(self, action):
+    def __init__(self, action, name):
         self.action = action
+        self.name = name
 
-    def __call__(self, *args):
-        result = self.action()
+    def __call__(self, *args, **kwargs):
+        if self.name == "printer":
+            result = self.action(kwargs["index"])
+        else:
+            result = self.action()
         return result
 
 
@@ -14,14 +23,32 @@ class Core(object):
     NAME = "3Dasha"
 
     def __init__(self):
+
+        self.config_manager = ConfigManager("configs")
+
         self.app = Flask(self.NAME)
-        self.host = "localhost"
-        self.port = 5000
-        self.debug = True
-        #print(self.list_ports())
-        self.camera = cv2.VideoCapture(1)
+        self.host = self.config_manager["application"]["host"]["value"]
+        self.port = self.config_manager["application"]["port"]["value"]
+        self.debug = self.config_manager["application"]["debug"]["value"]
+
+        self.printers = self.__add_printers()
+
+        print(self.list_ports())  
+        self.camera = cv2.VideoCapture(0)
 
         self.__add_endpoints()
+
+    def __add_printers(self) -> List[Printer]:
+        """
+        this method will iterate trough printers.json config and fetch all the data about printers into list
+        :return: List[Printer]
+        """
+        printers = []
+        for index in range(len(self.config_manager["printers"])):
+            printer_config = list(self.config_manager["printers"].values())[index]
+            printer = Printer(index, printer_config)
+            printers.append(printer)
+        return printers
 
     def list_ports(self):
         """
@@ -68,14 +95,22 @@ class Core(object):
 
     def __add_endpoints(self):
         self.__add_endpoint(endpoint='/', endpoint_name='index', handler=self.__index)
+        self.__add_endpoint(endpoint='/printer/<int:index>', endpoint_name='printer', handler=self.__printer)
         self.__add_endpoint(endpoint='/webcam', endpoint_name='webcam', handler=self.__setup_webcam)
 
     @staticmethod
     def __index():
         return render_template("index.html")
 
+    def __printer(self, index: int):
+        print(f"printer {index}")
+        if index < 0 or index >= len(self.printers):
+            return "printer not found"
+        printer = self.printers[index]
+        return render_template("printer.html", printer=printer)
+
     def __add_endpoint(self, endpoint=None, endpoint_name=None, handler=None):
-        self.app.add_url_rule(endpoint, endpoint_name, EndpointAction(handler))
+        self.app.add_url_rule(endpoint, endpoint_name, EndpointAction(handler, endpoint_name))
 
 
 if __name__ == "__main__":
