@@ -3,6 +3,8 @@ import os
 from glob import glob
 import functools
 import json
+
+from Common import BackendResponse
 class Printer:
     def __init__(self, printer_index: int, printer_config: dict):
         self.printer_index = printer_index
@@ -39,10 +41,32 @@ class Printer:
         json_formatted_str = json.dumps(self.directory_tree, indent=3)
         print(json_formatted_str)
 
+    def create_new_directory(self, directory_name, directory_path) -> BackendResponse:
+        global_path = (self.files_path + directory_path).replace("//", "/")
+        path = global_path + directory_name
+        if os.path.isdir(path):
+            return BackendResponse(success=False, info="directory already exist", data={})
+
+        if os.path.isdir(global_path):
+            os.makedirs(path)
+            return BackendResponse(success=True, info="successfully created directory!", data={})
+
+        return BackendResponse(success=False, info="path does not exist", data={})
+
+    def set_bed_temperature(self, temperature):
+        # TODO: send gcode bed temperature
+        print(f"bed temperature set to {temperature}")
+        return BackendResponse(success=True, info="bed temperature set!", data={})
+
+    def set_extruder_temperature(self, temperature):
+        # TODO: send gcode extruder temperature
+        print(f"extruder temperature set to {temperature}")
+        return BackendResponse(success=True, info="extruder temperature set!", data={})
+
     def init_directory(self):
         if not os.path.isdir(self.files_path ):
             print(f"creating directory for printer {self.printer_index}: \"{self.printer_name}\"")
-            os.makedirs(self.files_path )
+            os.makedirs(self.files_path)
 
     def fetch_directories(self, root_directory):
         """

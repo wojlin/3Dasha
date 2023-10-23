@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/directory.css') }}">
 </head>
 <body>
-<div id="data" data-files="{{printer.directory_tree_js}}"></div>
+<div id="data" data-printer="{{printer.printer_index}}" data-files="{{printer.directory_tree_js}}"></div>
 <div id="menu">
     <div id="menu_box_webcam">
         <div class="menu_box" id="webcam_content">
@@ -235,7 +235,7 @@
                             <button
                                     type="button"
                                     class="button-decrement"
-                                    onclick="setNumber(event)"
+                                    onclick="setExtruderTemperature(event)"
                                     data-input-id="extruder"
                                     data-operation="decrement"
                             ></button>
@@ -248,7 +248,7 @@
                                         value="100"
                                         min="0"
                                         max="300"
-                                        oninput="handleNumberInput()"
+                                        oninput="manualExtruderTemperature()"
                                         onblur="handleNumberInputBlur(event)"
                                         data-step="10"
                                 />
@@ -257,7 +257,7 @@
                             <button
                                     type="button"
                                     class="button-increment"
-                                    onclick="setNumber(event)"
+                                    onclick="setExtruderTemperature(event)"
                                     data-input-id="extruder"
                                     data-operation="increment"
                             ></button>
@@ -273,7 +273,7 @@
                             <button
                                     type="button"
                                     class="button-decrement"
-                                    onclick="setNumber(event)"
+                                    onclick="setBedTemperature(event)"
                                     data-input-id="bed"
                                     data-operation="decrement"
                             ></button>
@@ -286,7 +286,7 @@
                                         value="20"
                                         min="0"
                                         max="100"
-                                        oninput="handleNumberInput()"
+                                        oninput="manualBedTemperature()"
                                         onblur="handleNumberInputBlur(event)"
                                         data-step="10"
                                 />
@@ -295,7 +295,7 @@
                             <button
                                     type="button"
                                     class="button-increment"
-                                    onclick="setNumber(event)"
+                                    onclick="setBedTemperature(event)"
                                     data-input-id="bed"
                                     data-operation="increment"
                             ></button>
@@ -313,7 +313,7 @@
     </div>
 </div>
 
-
+<script src="{{url_for('static', filename='js/API.js')}}"></script>
 <script src="{{url_for('static', filename='js/core.js')}}"></script>
 <script src="{{url_for('static', filename='js/stepper.js')}}"></script>
 </body>

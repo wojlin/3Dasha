@@ -1,10 +1,11 @@
-from flask import Flask, Response, render_template
+from flask import Flask, Response, render_template, request
 from typing import List
 import cv2
 import os
 
 from ConfigManager import ConfigManager
 from Printer import Printer
+from Common import BackendResponse, response_to_json
 
 class EndpointAction(object):
     def __init__(self, action, name):
@@ -96,11 +97,42 @@ class Core(object):
     def __add_endpoints(self):
         self.__add_endpoint(endpoint='/', endpoint_name='index', handler=self.__index)
         self.__add_endpoint(endpoint='/printer/<int:index>', endpoint_name='printer', handler=self.__printer)
+        self.__add_endpoint(endpoint='/createNewDirectory', endpoint_name='createNewDirectory', handler=self.__printer_proxy)
+        self.__add_endpoint(endpoint='/setBedTemperature', endpoint_name='setBedTemperature', handler=self.__printer_proxy)
+        self.__add_endpoint(endpoint='/setExtruderTemperature', endpoint_name='setExtruderTemperature', handler=self.__printer_proxy)
         self.__add_endpoint(endpoint='/webcam', endpoint_name='webcam', handler=self.__setup_webcam)
 
     @staticmethod
     def __index():
         return render_template("index.html")
+
+    def __printer_proxy(self):
+
+        if 'printer' not in request.values:
+            return {"success": False, "reason": "bad request args"}
+
+        index = int(request.values["printer"])
+
+        if index < 0 or index >= len(self.printers):
+            return {"success": False, "reason": "printer does not exist"}
+
+        printer = self.printers[index]
+        if request.endpoint == "createNewDirectory":
+            directory_name = request.values["directoryName"]
+            directory_path = request.values["directoryPath"]
+            result = printer.create_new_directory(directory_name=directory_name, directory_path=directory_path)
+            return response_to_json(result)
+        elif request.endpoint == "setBedTemperature":
+            temperature = request.values["temperature"]
+            result = printer.set_bed_temperature(temperature=temperature)
+            return response_to_json(result)
+        elif request.endpoint == "setExtruderTemperature":
+            temperature = request.values["temperature"]
+            result = printer.set_extruder_temperature(temperature=temperature)
+            return response_to_json(result)
+
+        return {"success": False, "reason": "endpoint does not exist"}
+
 
     def __printer(self, index: int):
         print(f"printer {index}")

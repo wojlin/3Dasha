@@ -3,21 +3,12 @@ function init() {
     document.addEventListener("touchstart", function () {}, false);
 
     setInputButtonState();
-    setTemperature();
 }
 
 function handleNumberInput() {
     setInputButtonState();
-    setTemperature();
 }
 
-function setTemperature() {
-    let extruderTemp = document.getElementById("extruder").value;
-    let bedTemp = document.getElementById("bed").value;
-
-    console.log("extruder temperature set to: " + extruderTemp + "°C");
-    console.log("bed temperature set to: " + bedTemp + "°C");
-}
 
 function handleNumberInputBlur(event) {
     const value = event.target.value;
@@ -46,6 +37,41 @@ function setInputButtonState() {
     }
 }
 
+
+function manualExtruderTemperature()
+{
+    setInputButtonState();
+    let extruderTemp = document.getElementById("extruder").value;
+    api.setExtruderTemperature(extruderTemp);
+    console.log("extruder temperature set to: " + extruderTemp + "°C");
+}
+
+function manualBedTemperature()
+{
+    setInputButtonState();
+    let bedTemp = document.getElementById("bed").value;
+    api.setBedTemperature(bedTemp);
+    console.log("bed temperature set to: " + bedTemp + "°C");
+}
+
+function setBedTemperature(event)
+{
+    setNumber(event);
+
+    let bedTemp = document.getElementById("bed").value;
+    api.setBedTemperature(bedTemp);
+    console.log("bed temperature set to: " + bedTemp + "°C");
+}
+
+function setExtruderTemperature(event)
+{
+    setNumber(event);
+
+    let extruderTemp = document.getElementById("extruder").value;
+    api.setExtruderTemperature(extruderTemp);
+    console.log("extruder temperature set to: " + extruderTemp + "°C");
+}
+
 function setNumber(event) {
     let button = event.target;
     let input = document.getElementById(button.dataset.inputId);
@@ -70,7 +96,7 @@ function setNumber(event) {
 
         if (input.value !== value) {
             setInputValue(input, value);
-            setTemperature();
+            //setTemperature();
             setInputButtonState();
         }
     }
