@@ -100,6 +100,10 @@ class Core(object):
         self.__add_endpoint(endpoint='/createNewDirectory', endpoint_name='createNewDirectory', handler=self.__printer_proxy)
         self.__add_endpoint(endpoint='/setBedTemperature', endpoint_name='setBedTemperature', handler=self.__printer_proxy)
         self.__add_endpoint(endpoint='/setExtruderTemperature', endpoint_name='setExtruderTemperature', handler=self.__printer_proxy)
+        self.__add_endpoint(endpoint='/extrude', endpoint_name='extrude', handler=self.__printer_proxy)
+        self.__add_endpoint(endpoint='/move', endpoint_name='move', handler=self.__printer_proxy)
+        self.__add_endpoint(endpoint='/fetchPrintStatus', endpoint_name='fetchPrintStatus', handler=self.__printer_proxy)
+        self.__add_endpoint(endpoint='/fetchPrinterInfo', endpoint_name='fetchPrinterInfo', handler=self.__printer_proxy)
         self.__add_endpoint(endpoint='/webcam', endpoint_name='webcam', handler=self.__setup_webcam)
 
     @staticmethod
@@ -129,6 +133,22 @@ class Core(object):
         elif request.endpoint == "setExtruderTemperature":
             temperature = request.values["temperature"]
             result = printer.set_extruder_temperature(temperature=temperature)
+            return response_to_json(result)
+        elif request.endpoint == "extrude":
+            distance = request.values["distance"]
+            result = printer.extrude(distance=distance)
+            return response_to_json(result)
+        elif request.endpoint == "move":
+            x = request.values["x"]
+            y = request.values["y"]
+            z = request.values["z"]
+            result = printer.move(x=x, y=y, z=z)
+            return response_to_json(result)
+        elif request.endpoint == "fetchPrintStatus":
+            result = printer.fetch_print_status()
+            return response_to_json(result)
+        elif request.endpoint == "fetchPrinterInfo":
+            result = printer.fetch_printer_info()
             return response_to_json(result)
 
         return {"success": False, "reason": "endpoint does not exist"}

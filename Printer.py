@@ -5,6 +5,8 @@ import functools
 import json
 
 from Common import BackendResponse
+
+
 class Printer:
     def __init__(self, printer_index: int, printer_config: dict):
         self.printer_index = printer_index
@@ -26,10 +28,24 @@ class Printer:
         self.extruder_max_temperature = printer_config["bedSettings"]["bedMaxTemperature"]["value"]
         self.extruder_default_temperature = printer_config["bedSettings"]["bedDefaultTemperature"]["value"]
 
+        #  printing status  #
         self.isPrinting = False
         self.isActive = False
         self.isIdle = True
         self.printer_status = self.get_printer_status()
+        #####################
+
+        #  print status variables  #
+        self.printed_file = ""
+        self.timelapse_time = 0
+        self.print_time = 0
+        self.print_time_left = 0
+        self.printed_kb = "--/--kb"
+        self.printed_percentage = 0
+        ############################
+
+        self.is_file_uploaded = False
+        self.uploaded_file_path = ""
 
         self.project_path = '/'.join(__main__.__file__.split("/")[:-1])
         self.files_path = f"{self.project_path}/files/{self.printer_index}/"
@@ -63,10 +79,51 @@ class Printer:
         print(f"extruder temperature set to {temperature}")
         return BackendResponse(success=True, info="extruder temperature set!", data={})
 
+    def extrude(self, distance):
+        # TODO: send gcode extrude
+        print(f"extruded {distance}mm")
+        return BackendResponse(success=True, info=f"extruded {distance}mm!", data={})
+
+    def move(self, x, y, z):
+        # TODO: send gcode move
+        print(f"moved by x={x} y={y} z={z}")
+        return BackendResponse(success=True, info=f"moved by x={x} y={y} z={z}", data={})
+
     def init_directory(self):
-        if not os.path.isdir(self.files_path ):
+        if not os.path.isdir(self.files_path):
             print(f"creating directory for printer {self.printer_index}: \"{self.printer_name}\"")
             os.makedirs(self.files_path)
+
+    def fetch_printer_info(self):
+        data = {"name": self.printer_name,
+                "index": self.printer_index,
+                "port": self.printer_port,
+                "status": self.get_printer_status()
+                }
+        return BackendResponse(success=True, info=f"", data=data)
+
+    def fetch_print_status(self):
+        if self.isPrinting:
+            data = {"printed_file": self.printed_file,
+                    "timelapse_time": self.timelapse_time,
+                    "print_time": self.print_time,
+                    "print_time_left": self.print_time_left,
+                    "printed_kb": self.printed_kb,
+                    "printed_percentage": self.printed_percentage,
+                    "is_file_uploaded": self.is_file_uploaded,
+                    "is_printing": False
+                    }
+        else:
+            data = {"printed_file": "--",
+                    "timelapse_time": "--",
+                    "print_time": "--:--:--",
+                    "print_time_left": "--:--:--",
+                    "printed_kb": "--/--",
+                    "printed_percentage": 0,
+                    "is_file_uploaded": self.is_file_uploaded,
+                    "is_printing": False}
+
+        return BackendResponse(success=True, info=f"", data=data)
 
     def fetch_directories(self, root_directory):
         """

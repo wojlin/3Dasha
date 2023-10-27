@@ -257,6 +257,14 @@ h1 {
     opacity: 0.65;
 }
 
+#print_settings_buttons > button:disabled
+{
+    opacity: 0.35;
+    transform: scale(1);
+    cursor: default;
+}
+
+
 #print_settings_buttons > button > img
 {
     width: 2vh;
@@ -265,6 +273,12 @@ h1 {
     left:2vh;
     top: 50%;
     transform: translate(-50%,-50%);
+    -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
 }
 
 

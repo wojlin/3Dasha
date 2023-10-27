@@ -12,14 +12,241 @@ class PrintManager
 
         this.directoryStructure = JSON.parse(this.dataFields.dataset.files);
         this.currentPath = "/";
+        this.currentExtrude = 1;
+        this.changeExtrude(1, document.getElementById("extrude_1"));
 
         this.createDirectory(this.directoryStructure);
+        this.initMoveButtons();
+
+        this.print_status_file = document.getElementById("print_status_file");
+        this.print_status_timelapse = document.getElementById("print_status_timelapse");
+        this.print_status_time = document.getElementById("print_status_time");
+        this.print_status_time_left = document.getElementById("print_status_time_left");
+        this.print_status_printed = document.getElementById("print_status_printed");
+
+        this.print_status_button_print = document.getElementById("print_status_button_print");
+        this.print_status_button_pause = document.getElementById("print_status_button_pause");
+        this.print_status_button_stop = document.getElementById("print_status_button_stop");
+
+        this.printer_info_name = document.getElementById("printer_info_name");
+        this.printer_info_port = document.getElementById("printer_info_port");
+        this.printer_info_status = document.getElementById("printer_info_status");
+
+
+        this.updatePrintStatus();
+        this.updatePrinterInfo();
+    }
+
+    initMoveButtons()
+    {
+
+        for(let x = 1; x <= 3; x++)
+        {
+            document.getElementById('up_' + x.toString()).addEventListener('click', function(event)
+            {
+                event.preventDefault();
+                let value = 0;
+                if(x == 1)
+                {
+                    value = 1;
+                }else if(x == 2)
+                {
+                    value = 10;
+                }else
+                {
+                    value = 100;
+                }
+
+                let data = {"x": 0, "y": 0, "z": value};
+                api.move(data);
+            });
+
+            document.getElementById('down_' + x.toString()).addEventListener('click', function(event)
+            {
+                event.preventDefault();
+                let value = 0;
+                if(x == 1)
+                {
+                    value = 1;
+                }else if(x == 2)
+                {
+                    value = 10;
+                }else
+                {
+                    value = 100;
+                }
+
+                let data = {"x": 0, "y": 0, "z": -value};
+                api.move(data);
+            });
+
+            document.getElementById('forward_' + x.toString()).addEventListener('click', function(event)
+            {
+                event.preventDefault();
+                let value = 0;
+                if(x == 1)
+                {
+                    value = 1;
+                }else if(x == 2)
+                {
+                    value = 10;
+                }else
+                {
+                    value = 100;
+                }
+
+                let data = {"x": 0, "y": value, "z":0};
+                api.move(data);
+            });
+
+            document.getElementById('back_' + x.toString()).addEventListener('click', function(event)
+            {
+                event.preventDefault();
+                let value = 0;
+                if(x == 1)
+                {
+                    value = 1;
+                }else if(x == 2)
+                {
+                    value = 10;
+                }else
+                {
+                    value = 100;
+                }
+
+                let data = {"x": 0, "y": -value, "z":0};
+                api.move(data);
+            });
+
+            document.getElementById('left_' + x.toString()).addEventListener('click', function(event)
+            {
+                event.preventDefault();
+                let value = 0;
+                if(x == 1)
+                {
+                    value = 1;
+                }else if(x == 2)
+                {
+                    value = 10;
+                }else
+                {
+                    value = 100;
+                }
+
+                let data = {"x": -value, "y": 0, "z":0};
+                api.move(data);
+            });
+
+            document.getElementById('right_' + x.toString()).addEventListener('click', function(event)
+            {
+                event.preventDefault();
+                let value = 0;
+                if(x == 1)
+                {
+                    value = 1;
+                }else if(x == 2)
+                {
+                    value = 10;
+                }else
+                {
+                    value = 100;
+                }
+
+                let data = {"x": value, "y": 0, "z":0};
+                api.move(data);
+            });
+        }
+
+
+    }
+
+
+    updatePrinterInfo()
+    {
+        let interval = setInterval(function()
+        {
+            api.fetchPrinterInfo(data);
+        },
+        1000);
+    }
+
+    postUpdatePrinterInfo(response)
+    {
+        let json = JSON.parse(response);
+        console.log(json);
+
+        printManager.printer_info_name.innerHTML = json["data"]["name"];
+        printManager.printer_info_port.innerHTML = json["data"]["port"];
+        printManager.printer_info_status.innerHTML = json["data"]["status"];
+
+    }
+
+    updatePrintStatus()
+    {
+        let interval = setInterval(function()
+        {
+            api.fetchPrintStatus(data);
+        },
+        1000);
+    }
+
+    postUpdatePrintStatus(response)
+    {
+        let json = JSON.parse(response);
+
+        printManager.print_status_file.innerHTML = json["data"]["printed_file"];
+        printManager.print_status_timelapse.innerHTML = json["data"]["timelapse_time"];
+        printManager.print_status_time.innerHTML = json["data"]["print_time"];
+        printManager.print_status_time_left .innerHTML = json["data"]["print_time_left"];
+        printManager.print_status_printed.innerHTML = json["data"]["printed_kb"];
+
+        printManager.updateProgress(json["data"]["printed_percentage"]);
+
+        if(json["data"]["is_printing"])
+        {
+            printManager.print_status_button_print.disabled = true;
+            printManager.print_status_button_pause.disabled = false;
+            printManager.print_status_button_stop.disabled = false;
+        }else
+        {
+            printManager.print_status_button_pause.disabled = true;
+            printManager.print_status_button_stop.disabled = true;
+
+            if(json["data"]["is_file_uploaded"])
+            {
+                printManager.print_status_button_print.disabled = false;
+            }else
+            {
+                printManager.print_status_button_print.disabled = true;
+            }
+
+
+        }
+
     }
 
     updateProgress(percentage)
     {
         this.progressBar.style.width = percentage.toString() + "%";
         this.progressText.innerHTML = percentage.toString() + "%";
+    }
+
+    changeExtrude(value, obj)
+    {
+        let objs = document.getElementsByClassName("extruder_select");
+        for(let i = 0; i < objs.length; i++)
+        {
+            objs[i].style.opacity = 1;
+        }
+        obj.style.opacity = 0.5;
+        this.currentExtrude = value;
+        console.log("changed extrude to " + this.currentExtrude + "mm");
+    }
+
+
+    extrude()
+    {
+        api.extrude(this.currentExtrude);
     }
 
     createDirectory(json)

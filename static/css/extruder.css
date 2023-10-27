@@ -16,6 +16,13 @@
     display: inline-block;
     margin:0.5vh;
     padding:0;
+    cursor: pointer;
+    transition: all 0.1s;
+}
+
+.extruder_select:hover
+{
+    transform: scale(1.1);
 }
 
 #extrude_button
