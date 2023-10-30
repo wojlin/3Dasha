@@ -10,7 +10,7 @@ class API
 
     passResponse(value)
     {
-        console.log(value)
+        //console.log(value)
     }
 
     setBedTemperature(temperature)
@@ -33,23 +33,32 @@ class API
 
     move(data)
     {
-        console.log(data);
         let url = this.urlBase + "move?printer=" + this.printer + "&x=" + data["x"] + "&y=" + data["y"] + "&z=" + data["z"];
         this.get(url, api.passResponse);
     }
 
     fetchPrintStatus(data)
     {
-        console.log(data);
         let url = this.urlBase + "fetchPrintStatus?printer=" + this.printer;
         this.get(url, printManager.postUpdatePrintStatus);
     }
 
     fetchPrinterInfo(data)
     {
-        console.log(data);
         let url = this.urlBase + "fetchPrinterInfo?printer=" + this.printer;
         this.get(url, printManager.postUpdatePrinterInfo);
+    }
+
+    fetchMoveChart()
+    {
+        let url = this.urlBase + "fetchMoveHistory?printer=" + this.printer;
+        this.get(url, charts.updateMoveChart);
+    }
+
+    fetchTemperatureChart()
+    {
+        let url = this.urlBase + "fetchTemperatureHistory?printer=" + this.printer;
+        this.get(url, charts.updateTemperatureChart);
     }
 
 

@@ -42,9 +42,9 @@
 
 #menu_box_temperature { grid-area: temperature; }
 
-#menu_box_move_chart { grid-area: move_chart; }
+#menu_box_move_chart { grid-area: move_chart; position: relative;}
 
-#menu_box_temperature_chart { grid-area: temperature_chart; }
+#menu_box_temperature_chart { grid-area: temperature_chart; position:relative;}
 
 
 .menu_box

@@ -1,11 +1,18 @@
+import serial.serialutil
 from flask import Flask, Response, render_template, request
 from typing import List
+from threading import Thread
 import cv2
 import os
+import logging
 
 from ConfigManager import ConfigManager
 from Printer import Printer
 from Common import BackendResponse, response_to_json
+
+
+
+
 
 class EndpointAction(object):
     def __init__(self, action, name):
@@ -14,6 +21,8 @@ class EndpointAction(object):
 
     def __call__(self, *args, **kwargs):
         if self.name == "printer":
+            result = self.action(kwargs["index"])
+        elif self.name == "webcam":
             result = self.action(kwargs["index"])
         else:
             result = self.action()
@@ -34,8 +43,13 @@ class Core(object):
 
         self.printers = self.__add_printers()
 
-        print(self.list_ports())  
-        self.camera = cv2.VideoCapture(0)
+        self.threads = []
+
+        for printer in self.printers:
+            self.threads.append(Thread(target=printer.monitor))
+
+        for thread in self.threads:
+            thread.start()
 
         self.__add_endpoints()
 
@@ -47,8 +61,13 @@ class Core(object):
         printers = []
         for index in range(len(self.config_manager["printers"])):
             printer_config = list(self.config_manager["printers"].values())[index]
-            printer = Printer(index, printer_config)
-            printers.append(printer)
+            try:
+                printer = Printer(index, printer_config)
+                printers.append(printer)
+            except serial.serialutil.SerialException as e:
+                name = printer_config["printerSettings"]["name"]["value"]
+                port = printer_config["printerSettings"]["port"]["value"]
+                logging.getLogger().error(f'could not add printer "{name}" on port "{port}"')
         return printers
 
     def list_ports(self):
@@ -80,9 +99,11 @@ class Core(object):
     def run(self):
         self.app.run(host=self.host, port=self.port, debug=self.debug, use_reloader=False)
 
-    def gen_frames(self):
+    def gen_frames(self, index: int):
+        camera_port = self.printers[index].camera_port
+        cam = cv2.VideoCapture(camera_port)
         while True:
-            success, frame = self.camera.read()  # read the camera frame
+            success, frame = cam.read()  # read the camera frame
             if not success:
                 break
             else:
@@ -91,8 +112,8 @@ class Core(object):
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-    def __setup_webcam(self):
-        return Response(self.gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    def __setup_webcam(self, index: int):
+        return Response(self.gen_frames(index), mimetype='multipart/x-mixed-replace; boundary=frame')
 
     def __add_endpoints(self):
         self.__add_endpoint(endpoint='/', endpoint_name='index', handler=self.__index)
@@ -104,7 +125,9 @@ class Core(object):
         self.__add_endpoint(endpoint='/move', endpoint_name='move', handler=self.__printer_proxy)
         self.__add_endpoint(endpoint='/fetchPrintStatus', endpoint_name='fetchPrintStatus', handler=self.__printer_proxy)
         self.__add_endpoint(endpoint='/fetchPrinterInfo', endpoint_name='fetchPrinterInfo', handler=self.__printer_proxy)
-        self.__add_endpoint(endpoint='/webcam', endpoint_name='webcam', handler=self.__setup_webcam)
+        self.__add_endpoint(endpoint='/fetchMoveHistory', endpoint_name='fetchMoveHistory', handler=self.__printer_proxy)
+        self.__add_endpoint(endpoint='/fetchTemperatureHistory', endpoint_name='fetchTemperatureHistory', handler=self.__printer_proxy)
+        self.__add_endpoint(endpoint='/webcam/<int:index>', endpoint_name='webcam', handler=self.__setup_webcam)
 
     @staticmethod
     def __index():
@@ -150,6 +173,12 @@ class Core(object):
         elif request.endpoint == "fetchPrinterInfo":
             result = printer.fetch_printer_info()
             return response_to_json(result)
+        elif request.endpoint == "fetchMoveHistory":
+            result = printer.fetch_move_history()
+            return response_to_json(result)
+        elif request.endpoint == "fetchTemperatureHistory":
+            result = printer.fetch_temperature_history()
+            return response_to_json(result)
 
         return {"success": False, "reason": "endpoint does not exist"}
 
@@ -166,6 +195,9 @@ class Core(object):
 
 
 if __name__ == "__main__":
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
+
     core = Core()
     core.run()
 

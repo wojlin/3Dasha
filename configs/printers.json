@@ -4,7 +4,7 @@
     "printerSettings":
     {
       "name": {"value":  "Creality ender 3 v2 Neo", "unit": "", "comment":  "name of 3D printer"},
-      "port": {"value":  "/dev/usb/xD", "unit": "", "comment":  "USB port of 3D printer"}
+      "port": {"value":  "/dev/ttyUSB0", "unit": "", "comment":  "USB port of 3D printer"}
     },
     "cameraSettings":
     {

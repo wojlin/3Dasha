@@ -3,9 +3,10 @@ import os
 from glob import glob
 import functools
 import json
+import time
+import serial
 
-from Common import BackendResponse
-
+from Common import BackendResponse, CyclicBuffer
 
 class Printer:
     def __init__(self, printer_index: int, printer_config: dict):
@@ -27,6 +28,8 @@ class Printer:
         self.extruder_min_temperature = printer_config["bedSettings"]["bedMinTemperature"]["value"]
         self.extruder_max_temperature = printer_config["bedSettings"]["bedMaxTemperature"]["value"]
         self.extruder_default_temperature = printer_config["bedSettings"]["bedDefaultTemperature"]["value"]
+
+        self.serial = serial.Serial(self.printer_port, 115200, timeout=2)
 
         #  printing status  #
         self.isPrinting = False
@@ -54,8 +57,37 @@ class Printer:
         self.directory_tree = self.fetch_directories(self.files_path)
         self.directory_tree_js = json.dumps(self.directory_tree)
 
-        json_formatted_str = json.dumps(self.directory_tree, indent=3)
-        print(json_formatted_str)
+        self.sequence_time = 1
+        self.bed_temperature_history = CyclicBuffer(60, 0)
+        self.extruder_temperature_history = CyclicBuffer(60, 0)
+        self.move_history = CyclicBuffer(60, {"x": 0, "y": 0, "z": 0})
+
+    def close_connection(self):
+        self.serial.close()
+
+    def monitor(self):
+
+        while True:
+            start = time.time()
+
+            temp_raw = self.send_gcode("M105;\n")
+            extruder_temperature = float(temp_raw.decode().split('T:')[1].split(' ')[0])
+            bed_temperature = float(temp_raw.decode().split('B:')[1].split(' ')[0])
+
+            self.bed_temperature_history.add_value(bed_temperature)
+            self.extruder_temperature_history.add_value(extruder_temperature)
+
+            self.move_history.add_value({"x": 0, "y": 0, "z": 0})
+
+            end = time.time()
+            time_elapsed = end - start
+            time_left = self.sequence_time - time_elapsed
+            if time_left > 0:
+                time.sleep(time_left)
+
+
+
+
 
     def create_new_directory(self, directory_name, directory_path) -> BackendResponse:
         global_path = (self.files_path + directory_path).replace("//", "/")
@@ -84,15 +116,42 @@ class Printer:
         print(f"extruded {distance}mm")
         return BackendResponse(success=True, info=f"extruded {distance}mm!", data={})
 
-    def move(self, x, y, z):
-        # TODO: send gcode move
+    def move(self, x: float, y: float, z: float):
+        gcode = "G91;\n G1"
+        if int(x) != 0:
+            gcode += f" X{x}"
+        if int(y) != 0:
+            gcode += f" Y{y}"
+        if int(z) != 0:
+            gcode += f" Z{z}"
+        gcode += ";\n"
+        self.send_gcode(gcode)
         print(f"moved by x={x} y={y} z={z}")
         return BackendResponse(success=True, info=f"moved by x={x} y={y} z={z}", data={})
+
+    def send_gcode(self, gcode: str):
+        print(gcode)
+        self.serial.write(gcode.encode())
+        response = self.serial.readline()
+        print(response)
+        return response
 
     def init_directory(self):
         if not os.path.isdir(self.files_path):
             print(f"creating directory for printer {self.printer_index}: \"{self.printer_name}\"")
             os.makedirs(self.files_path)
+
+    def fetch_move_history(self):
+        history = self.move_history.get_buffer_content()
+        return BackendResponse(success=True, info="", data={"points": history, "amount": len(history)})
+
+    def fetch_temperature_history(self):
+        bed = list(reversed(self.bed_temperature_history.get_buffer_content()))
+        extruder = list(reversed(self.extruder_temperature_history.get_buffer_content()))
+
+        amount = len(bed)
+        labels = list(reversed([str(-x) + 'S' for x in range(amount)]))
+        return BackendResponse(success=True, info="", data={"bed": bed, "extruder": extruder, "labels": labels})
 
     def fetch_printer_info(self):
         data = {"name": self.printer_name,

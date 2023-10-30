@@ -9,13 +9,14 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/extruder.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bar.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/directory.css') }}">
+    <script type="module" src="{{ url_for('static',filename='js/chart.min.js') }}"></script>
 </head>
 <body>
 <div id="data" data-printer="{{printer.printer_index}}" data-files="{{printer.directory_tree_js}}"></div>
 <div id="menu">
     <div id="menu_box_webcam">
         <div class="menu_box" id="webcam_content">
-            <img id="webcam" src="{{ url_for('webcam') }}" width="100%">
+            <img id="webcam" src="{{ url_for('webcam', index=printer.printer_index) }}" width="100%">
         </div>
     </div>
     <div class="menu_box" id="menu_box_move">
@@ -307,14 +308,18 @@
     </div>
     <div class="menu_box" id="menu_box_move_chart">
         <h1>Move Chart</h1>
+        <canvas class="chart" id="move_chart"></canvas>
     </div>
     <div class="menu_box" id="menu_box_temperature_chart">
         <h1>Temperature Chart</h1>
+        <canvas class="chart" id="temperature_chart"></canvas>
     </div>
 </div>
 
 <script src="{{url_for('static', filename='js/API.js')}}"></script>
 <script src="{{url_for('static', filename='js/core.js')}}"></script>
 <script src="{{url_for('static', filename='js/stepper.js')}}"></script>
+<script src="{{url_for('static', filename='js/charts.js')}}"></script>
+
 </body>
 </html>

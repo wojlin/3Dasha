@@ -1,5 +1,3 @@
-console.log("xD");
-
 class PrintManager
 {
     constructor()
@@ -173,8 +171,6 @@ class PrintManager
     postUpdatePrinterInfo(response)
     {
         let json = JSON.parse(response);
-        console.log(json);
-
         printManager.printer_info_name.innerHTML = json["data"]["name"];
         printManager.printer_info_port.innerHTML = json["data"]["port"];
         printManager.printer_info_status.innerHTML = json["data"]["status"];
@@ -264,8 +260,6 @@ class PrintManager
         let directoryObj = document.getElementById("directory");
         directoryObj.innerHTML = "";
 
-        console.log(json);
-
 
         let create = document.createElement("li");
         create.classList.add('directory-item');
@@ -298,7 +292,6 @@ class PrintManager
                 span.innerHTML = entry;
                 li.setAttribute('data-type', "file");
                 li.addEventListener('click', this.highlightFile, false);
-                console.log("new file: " + entry);
             }else
             {
                 span.classList.add("directory-icon-directory");
@@ -307,7 +300,6 @@ class PrintManager
                 li.setAttribute('data-structure', JSON.stringify(json[entry]));
                 li.setAttribute('data-name', entry);
                 li.addEventListener('click', this.updateDirectory, false);
-                console.log("new directory: " + entry);
             }
 
 
@@ -361,7 +353,6 @@ class PrintManager
     {
         let path = this.currentPath.split('/');
         path = path.filter(item => item !== "");
-        console.log(path);
         let json = this.directoryStructure;
         let newPath = "/";
         for(var i = 0; i < path.length - 1; i++)
@@ -376,7 +367,6 @@ class PrintManager
 
     updateDirectory(element)
     {
-        console.log(element.target);
 
         let id = "selectFilePanel";
         let existingButton = document.getElementById(id);
@@ -394,8 +384,6 @@ class PrintManager
 
         go_button.addEventListener("click", (element) =>
         {
-            console.log("clicked element");
-            console.log(element.target.parentNode.parentNode)
             let json = JSON.parse(element.target.parentNode.parentNode.dataset.structure);
             let name = element.target.parentNode.parentNode.dataset.name;
             printManager.currentPath += name + "/";
@@ -477,7 +465,6 @@ class PrintManager
 
     cancelCreateDirectory(e)
     {
-        console.log("cancel create dir!")
 
         document.getElementById("create_new_directory_container").remove();
         let create_span = document.createElement("span");
