@@ -63,6 +63,8 @@ class Printer:
         self.extruder_temperature_history = CyclicBuffer(60, 0)
         self.move_history = CyclicBuffer(60, {"x": 0, "y": 0, "z": 0})
 
+        self.send_gcode("M118 'Hello'")
+
     def close_connection(self):
         self.serial.close()
 
@@ -80,7 +82,20 @@ class Printer:
             except Exception:
                 pass
 
-            self.move_history.add_value({"x": 0, "y": 0, "z": 0})
+            time.sleep(0.2)
+            pos_raw = self.send_gcode("M114;\n").decode()
+            #print(pos_raw)
+            if "ok" not in pos_raw:
+                try:
+                    lists = pos_raw.split(" ")
+                    x_pos = float(lists[0].split(":")[-1])
+                    y_pos = float(lists[1].split(":")[-1])
+                    z_pos = float(lists[2].split(":")[-1])
+                    print(x_pos, y_pos, z_pos)
+                    self.move_history.add_value({"x": x_pos, "y": y_pos, "z": z_pos})
+                except Exception:
+                    pass
+
 
             end = time.time()
             time_elapsed = end - start
@@ -117,9 +132,16 @@ class Printer:
         return BackendResponse(success=True, info="extruder temperature set!", data={})
 
     def extrude(self, distance):
-        # TODO: send gcode extrude
+        gcode = f"G1 E{distance};\n"
+        self.send_gcode(gcode)
         print(f"extruded {distance}mm")
         return BackendResponse(success=True, info=f"extruded {distance}mm!", data={})
+
+
+    def home(self):
+        self.send_gcode("G28;\n")
+        print("home")
+        return BackendResponse(success=True, info=f"home!", data={})
 
     def move(self, x: float, y: float, z: float):
         gcode = "G91;\n G1"
@@ -137,7 +159,7 @@ class Printer:
     def send_gcode(self, gcode: str):
         self.serial.write(gcode.encode())
         response = self.serial.readline()
-        print(f"{gcode.strip()} -> {response.decode().strip()}")
+        #print(f"{gcode.strip()} -> {response.decode().strip()}")
         return response
 
     def init_directory(self):
@@ -147,7 +169,7 @@ class Printer:
 
     def fetch_move_history(self):
         history = self.move_history.get_buffer_content()
-        return BackendResponse(success=True, info="", data={"points": history, "amount": len(history)})
+        return BackendResponse(success=True, info="", data={"points": history, "x_max": self.x_size, "y_max": self.y_size, "z_max": self.z_size})
 
     def fetch_temperature_history(self):
         bed = list(reversed(self.bed_temperature_history.get_buffer_content()))

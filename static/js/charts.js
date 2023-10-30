@@ -41,13 +41,104 @@ class Charts
         let json = JSON.parse(response);
         console.log(json);
 
+        if(charts.temperature_chart == null)
+        {
+            let data = {
+                datasets: [
+                    {
+                        label: '',
+                        data: json["data"]["points"],
+                        fill: false,
+                        borderColor: "rgba(251.0, 199.0, 162.0, 1)",
+                        lineTension: 0,
+                    }
+                ]
+            };
+
+            // Configuration options for the chart
+            let config = {
+                type: 'scatter',
+                data: data,
+                options:
+                {
+                     plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: false,
+                            text: ''
+                        }
+                    },
+                    events: [],
+                    maintainAspectRatio: false,
+                    scaleBeginAtZero : true,
+                    scales: {
+                        xAxes:
+                        [
+                            {
+                                display: true,
+                                ticks: {
+                                    beginAtZero: true,
+                                    max: json["data"]["x_max"],
+                                     fontColor: 'white',
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'X',
+                                    fontColor: 'white',
+                                },
+                                gridLines:
+                                {
+                                    color: "rgba(255,255,255,0.7)"
+                                },
+                            }
+                        ],
+                        yAxes:
+                        [
+                            {
+                                display: true,
+                                ticks: {
+                                    beginAtZero: true,
+                                    max: json["data"]["y_max"],
+                                    fontColor: 'white',
+                                },
+                                scaleLabel:{
+                                    display: true,
+                                    labelString: 'Y',
+                                    fontColor: 'white',
+                                }
+                                ,
+                                gridLines:
+                                {
+                                    color: "rgba(255,255,255,0.7)"
+                                },
+                            }
+                        ]
+                    },
+                }
+            };
+
+            charts.move_chart = new Chart(charts.move_chart_canvas, config);
+
+        }
+        else
+        {
+
+             charts.move_chart.data.datasets.forEach((dataset) => {
+                dataset.data = json["data"]["points"];
+                charts.move_chart.update();
+            });
+
+
+        }
+
     }
 
     updateTemperatureChart(response)
     {
 
         let json = JSON.parse(response);
-        console.log(json);
 
         if(charts.temperature_chart == null)
         {

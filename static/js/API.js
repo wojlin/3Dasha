@@ -37,6 +37,12 @@ class API
         this.get(url, api.passResponse);
     }
 
+    home()
+    {
+        let url = this.urlBase + "home?printer=" + this.printer;
+        this.get(url, api.passResponse);
+    }
+
     fetchPrintStatus(data)
     {
         let url = this.urlBase + "fetchPrintStatus?printer=" + this.printer;

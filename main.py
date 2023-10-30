@@ -68,6 +68,7 @@ class Core(object):
                 name = printer_config["printerSettings"]["name"]["value"]
                 port = printer_config["printerSettings"]["port"]["value"]
                 logging.getLogger().error(f'could not add printer "{name}" on port "{port}"')
+                logging.getLogger().error(e.with_traceback())
         return printers
 
     def list_ports(self):
@@ -123,6 +124,7 @@ class Core(object):
         self.__add_endpoint(endpoint='/setExtruderTemperature', endpoint_name='setExtruderTemperature', handler=self.__printer_proxy)
         self.__add_endpoint(endpoint='/extrude', endpoint_name='extrude', handler=self.__printer_proxy)
         self.__add_endpoint(endpoint='/move', endpoint_name='move', handler=self.__printer_proxy)
+        self.__add_endpoint(endpoint='/home', endpoint_name='home', handler=self.__printer_proxy)
         self.__add_endpoint(endpoint='/fetchPrintStatus', endpoint_name='fetchPrintStatus', handler=self.__printer_proxy)
         self.__add_endpoint(endpoint='/fetchPrinterInfo', endpoint_name='fetchPrinterInfo', handler=self.__printer_proxy)
         self.__add_endpoint(endpoint='/fetchMoveHistory', endpoint_name='fetchMoveHistory', handler=self.__printer_proxy)
@@ -162,10 +164,13 @@ class Core(object):
             result = printer.extrude(distance=distance)
             return response_to_json(result)
         elif request.endpoint == "move":
-            x = request.values["x"]
-            y = request.values["y"]
-            z = request.values["z"]
+            x = float(request.values["x"])
+            y = float(request.values["y"])
+            z = float(request.values["z"])
             result = printer.move(x=x, y=y, z=z)
+            return response_to_json(result)
+        elif request.endpoint == "home":
+            result = printer.home()
             return response_to_json(result)
         elif request.endpoint == "fetchPrintStatus":
             result = printer.fetch_print_status()
