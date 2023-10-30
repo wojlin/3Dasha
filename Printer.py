@@ -1,4 +1,5 @@
 import __main__
+import logging
 import os
 from glob import glob
 import functools
@@ -71,11 +72,13 @@ class Printer:
             start = time.time()
 
             temp_raw = self.send_gcode("M105;\n")
-            extruder_temperature = float(temp_raw.decode().split('T:')[1].split(' ')[0])
-            bed_temperature = float(temp_raw.decode().split('B:')[1].split(' ')[0])
-
-            self.bed_temperature_history.add_value(bed_temperature)
-            self.extruder_temperature_history.add_value(extruder_temperature)
+            try:
+                extruder_temperature = float(temp_raw.decode().split('T:')[1].split(' ')[0])
+                bed_temperature = float(temp_raw.decode().split('B:')[1].split(' ')[0])
+                self.bed_temperature_history.add_value(bed_temperature)
+                self.extruder_temperature_history.add_value(extruder_temperature)
+            except Exception:
+                pass
 
             self.move_history.add_value({"x": 0, "y": 0, "z": 0})
 
@@ -102,12 +105,14 @@ class Printer:
         return BackendResponse(success=False, info="path does not exist", data={})
 
     def set_bed_temperature(self, temperature):
-        # TODO: send gcode bed temperature
+        gcode = f"M140 S{temperature};\n"
+        self.send_gcode(gcode)
         print(f"bed temperature set to {temperature}")
         return BackendResponse(success=True, info="bed temperature set!", data={})
 
     def set_extruder_temperature(self, temperature):
-        # TODO: send gcode extruder temperature
+        gcode = f"M104 S{temperature};\n"
+        self.send_gcode(gcode)
         print(f"extruder temperature set to {temperature}")
         return BackendResponse(success=True, info="extruder temperature set!", data={})
 
@@ -130,10 +135,9 @@ class Printer:
         return BackendResponse(success=True, info=f"moved by x={x} y={y} z={z}", data={})
 
     def send_gcode(self, gcode: str):
-        print(gcode)
         self.serial.write(gcode.encode())
         response = self.serial.readline()
-        print(response)
+        print(f"{gcode.strip()} -> {response.decode().strip()}")
         return response
 
     def init_directory(self):

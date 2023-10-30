@@ -143,7 +143,22 @@ class Charts
         }
         else
         {
-            
+
+             charts.temperature_chart.data.datasets.forEach((dataset) => {
+                if(dataset.label == "Bed temperature")
+                {
+                    dataset.data = json["data"]["bed"];
+                }
+
+                if(dataset.label == "Extruder temperature")
+                {
+                    dataset.data = json["data"]["extruder"];
+                }
+
+                charts.temperature_chart.update(); // Update the chart
+            });
+
+
         }
     }
 
